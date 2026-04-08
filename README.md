@@ -42,4 +42,4 @@ This project includes:
 
 </div>
 <b>**Repository cloned from django ecommerce tutorial (git user justdjango) on freeCodeCamp with additional updates**</b>
-***MDBootstrap css used, bootstrap used for javascript. Note the mapping of button-danger to button-warning in settings.py to account for differences in html classes.
+***MDBootstrap css used, Bootstrap5 used for javascript. Note the mapping of button-danger to button-warning in settings.py to account for differences in html classes.
