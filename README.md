@@ -10,7 +10,7 @@
 </p>
 
 # Django Project Boilerplate
-
+** Cloned from django ecommerce tutorial (git user justdjango) on freeCode Camp with additional updates**
 This repository is a boilerplate Django project for quickly getting started.
 
 <p align="center">
@@ -42,3 +42,4 @@ This project includes:
 <a href="https://www.twitter.com/justdjangocode" target="_blank"><img src="https://img.shields.io/badge/Twitter-%231877F2.svg?&style=flat-square&logo=twitter&logoColor=white" alt="Twitter"></a>
 
 </div>
+** Cloned from django ecommerce tutorial (git user justdjango) on freeCode Camp with additional updates**
