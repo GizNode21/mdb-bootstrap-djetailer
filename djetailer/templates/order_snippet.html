@@ -1,0 +1,85 @@
+<ul class="list-group mb-3">
+    {% for obj in object.items.all %}
+    <li class="list-group-item d-flex justify-content-between">
+        <div>
+            <h6 class="my-0">{{ obj.item.title }} x {{ obj.quantity }} @ {{ obj.item.price }}
+            </h6>
+            <small class="text-muted">{{ obj.item.description }}</small>
+        </div>
+        {% if obj.item.discount_price %}
+        <span class="text-muted">${{ obj.get_total_discount_price }}
+            <div style="color: green">(-${{obj.get_amount_saved }})</div>
+        </span>
+        {% else %}
+        <span class="text-muted">${{ obj.get_total_item_price }}</span>
+        {% endif %}
+    </li>
+    {% endfor %}
+    <li class="list-group-item d-flex justify-content-between">
+        <button type="submit" class="btn btn-danger"
+            onclick="window.location=`{% url 'core:order-summary' %}`; return false;">
+            Edit
+        </button>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">Subtotal: <span class="text-muted">
+            ${{ object.get_total_price }}</span></li>
+    {% if object.billing_address and object.shipping_address %}
+    <li class="list-group-item d-flex justify-content-between">
+        <ul class="list-group mb-3" style="width: 100%">
+            <li class="list-group-item d-flex justify-content-between"><span><b>Confirm shipping_address:</b></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                Street: <span class="text-muted">{{ object.shipping_address.street_address }}</span>
+            </li>
+            {% if object.shipping_address.apartment_address %}
+            <li class="list-group-item d-flex justify-content-between">
+                Apartment Address: <span class="text-muted">{{ object.shipping_address.apartment_address }}</span>
+            </li>
+            {% endif %}
+            <li class="list-group-item d-flex justify-content-between">
+                Country: <span class="text-muted">{{ object.shipping_address.country }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                Zip: <span class="text-muted">{{ object.shipping_address.zip }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between"><span><b>Confirm billing_address:</b></span></li>
+            <li class="list-group-item d-flex justify-content-between">
+                Street: <span class="text-muted">{{ object.billing_address.street_address }}</span>
+            </li>
+            {% if object.billing_address.apartment_address %}
+            <li class="list-group-item d-flex justify-content-between">
+                Apartment Address: <span class="text-muted">{{ object.billing_address.apartment_address }}</span>
+            </li>
+            {% endif %}
+            <li class="list-group-item d-flex justify-content-between">
+                Country: <span class="text-muted">{{ object.billing_address.country }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                Zip: <span class="text-muted">{{ object.billing_address.zip }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                <button type="submit" class="btn btn-danger"
+                    onclick="window.location=`{% url 'core:check-out-edit' object.id %}`; return false;">
+                    Edit
+                </button>
+            </li>
+        </ul>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+        Shipping {% if object.get_total_price >= 50 %}(20%){% else %}(10%){% endif %}:<span class="text-muted">
+            ${{object.get_shipping }}</span></li>
+    <li class="list-group-item d-flex justify-content-between">
+        Tax (6.75%): <span class="text-muted">${{ object.get_tax }}</span></li>
+    <li class="list-group-item d-flex justify-content-between">
+        Grand Total: <span style="font-weight: bold;">${{ object.get_grand_total }}</span></li>
+    {% endif %}
+</ul>
+<form class="card p-2">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Promo code" aria-label="Promo code"
+            aria-describedby="button-addon2" />
+        <button class="btn btn-primary" type="button" id="button-addon2" data-mdb-ripple-color="dark">
+            redeem
+        </button>
+    </div>
+</form>

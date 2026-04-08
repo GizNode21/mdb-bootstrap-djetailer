@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% include 'head.html' %}
+
+<body>
+  {% include 'navbar.html' %}
+  <!-- End your project here-->
+  <!--<img
+    class="mb-4"
+    src="https://mdbootstrap.com/img/logo/mdb-transparent-250px.png"
+    style="width: 250px; height: 90px"
+    />-->
+  <div class="mt-5">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+  {% block content %}
+  {% endblock %}
+
+  {% block extrabody %}
+  {% endblock %}
+
+  {% include 'scripts.html' %}
+  {% include 'footer.html' %}
+  {% block extrascripts %}
+  {% endblock %}
+</body>
+
+</html>

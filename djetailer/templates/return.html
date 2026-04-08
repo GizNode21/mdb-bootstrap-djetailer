@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block extrahead %}
+<link rel="stylesheet" href="css/stripe.css" />
+{% endblock %}
+{% block content %}
+
+<body>
+    <main>
+        <a href="/">home</a>
+        <h1>Thank you!</h1>
+
+        <div id="messages" role="alert"></div>
+    </main>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load the publishable key from the server. The publishable key
+            // is set in your .env file.
+            const stripePublishableKey = { "publishableKey": "{{ stripeKey }}" }
+            const { publishableKey } = stripePublishableKey; //await fetch('/config').then((r) => r.json());
+            if (!publishableKey) {
+                /*addMessage(
+                    'No publishable key returned from the server. Please check `.env` and try again'
+                );*/
+                alert('Please set your Stripe publishable API key in the .env file');
+            }
+
+            const stripe = Stripe(publishableKey, {
+                apiVersion: '2020-08-27',
+            });
+
+            const url = new URL(window.location);
+            const clientSecret = url.searchParams.get('payment_intent_client_secret');
+
+            const { error, paymentIntent } = await stripe.retrievePaymentIntent(
+                clientSecret
+            );
+            setTimeout(() => {
+                window.location.href = "/"
+            }, 2000);
+            if (error) {
+                //addMessage(error.message);
+            }
+            //addMessage(`Payment ${paymentIntent.status}: ${paymentIntent.id}`);
+        });
+    </script>
+</body>
+{% endblock %}

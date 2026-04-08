@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<!--Main layout-->
+<main>
+    <div class="container">
+        <!-- Heading -->
+        {% if object.billing_address and object.shipping_address %}
+        <h2 class="my-5 text-center">Edit Checkout form</h2>
+        {% else %}
+        <h2 class="my-5 text-center">Checkout form</h2>
+        {% endif %}
+        <!--Grid row-->
+        <div class="row">
+            <!--Grid column-->
+            <div class="col-md-8 mb-4">
+                <!--Card-->
+                <form method="POST" class="card p-4">
+                    {% csrf_token %}
+                    <!--<form>
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>-->
+                    <!--address-->
+                    <h3>Shipping Address</h3>
+                    <div class="hideable-shipping-form">
+                        <div class="form-outline mb-5">
+                            <label for="shipping_address" class="">Address</label>
+                            <input type="text" class="text-input form-control" placeholder="1234 Main St"
+                                id="id_shipping_address" {% if form2 %} name="first-shipping_address" {% else %}
+                                name="shipping_address" {% endif %} aria-label="1234 Main St"
+                                aria-describedby="basic-addon1" value="{{form.shipping_address.value|default:''}}" />
+                        </div>
+
+                        <!--address-2-->
+                        <div class="form-outline mb-5">
+                            <label for="shipping_address2">Address 2 (optional)</label>
+                            <input type="text" class="text-input form-control" placeholder="Apartment or suite"
+                                id="id_shipping_address2" {% if form2 %} name="first-shipping_address2" {% else %}
+                                name="shipping_address2" {% endif %} aria-label="Apartment or suite"
+                                aria-describedby="basic-addon1" value="{{form.shipping_address2.value|default:''}}" />
+                        </div>
+
+                        <!--Grid row-->
+                        <div class="row">
+                            <!--Grid column-->
+                            <div class="col-lg-4 col-md-12 mb-4">
+                                <p class="mb-0">
+                                    Country
+                                </p>
+                                <div class="form-outline mb-4">
+                                    <!--<input type="email" class="form-control" placeholder="United States"
+                                        aria-label="United States" aria-describedby="basic-addon1" />-->
+                                    {{ form.shipping_country }}
+                                    <div class="invalid-feedback">
+                                        Please select a valid country.
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Grid column-->
+
+                            <!--Grid column-->
+                            <div class="col-lg-4 col-md-12 mb-4">
+                                <div class="form-outline">
+                                    <label for="shipping_zip">Zip</label>
+                                    <input type="text" class="text-input form-control" placeholder="Zip code"
+                                        id="id_shipping_zip" {% if form2 %} name="first-shipping_zip" {% else %}
+                                        name="shipping_zip" {% endif %}
+                                        value="{{form.shipping_zip.value|default:''}}" />
+                                    <div class="invalid-feedback">
+                                        Zip code required.
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Grid column-->
+                        </div>
+                        <!--Grid row-->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" {% if form2 %}
+                                name="first-same_billing_address" {% else %} name="same_billing_address" {% endif %}
+                                id="flexCheckDefault" />
+                            <label class="form-check-label" for="same_billing_address">Shipping address is the same as
+                                my
+                                billing address</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" {% if form2 %}
+                                name="first-set_default_shipping" {% else %} name="set_default_shipping" {% endif %}
+                                id="set_default_shipping" id="flexCheckDefault" />
+                            <label class="form-check-label" for="set_default_shipping">Save as default shipping
+                                address.</label>
+                        </div>
+                    </div>
+                    {% if default_shipping_address %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" {% if form2 %} name="use_default_shipping" {%
+                            else %} name="use_default_shipping" {% endif %} id="use_default_shipping"
+                            id="flexCheckDefault" />
+                        Use default shipping: {{ default_shipping_address }}
+                    </div>
+                    {% endif %}
+                    <hr />
+                    <h3>Billing Address</h3>
+                    <div class="hideable-billing-form">
+                        <div class="form-outline mb-5">
+                            <label for="billing_address" class="">Address</label>
+                            <input type="text" class="text-input form-control" placeholder="1234 Main St"
+                                id="id_billing_address" aria-label="1234 Main St" {% if form2 %}
+                                name="second-billing_address" {% else %} name="billing_address" {% endif %}
+                                aria-describedby="basic-addon1" {% if form2 %}
+                                value="{{form2.billing_address.value|default:''}}" {% else %}
+                                value="{{form.billing_address.value|default:''}}" {% endif %} />
+                        </div>
+
+                        <!--address-2-->
+                        <div class="form-outline mb-5">
+                            <label for="billing_address2">Address 2 (optional)</label>
+                            <input type="text" class="text-input form-control" placeholder="Apartment or suite"
+                                id="id_billing_address2" aria-label="Apartment or suite" aria-describedby="basic-addon1"
+                                {% if form2 %} name="second-billing_address2"
+                                value="{{form2.billing_address2.value|default:''}}" {% else %} name="billing_address2"
+                                value="{{form.billing_address2.value|default:''}}" {% endif %} />
+                        </div>
+
+                        <!--Grid row-->
+                        <div class="row">
+                            <!--Grid column-->
+                            <div class="col-lg-4 col-md-12 mb-4">
+                                <p class="mb-0">
+                                    Country
+                                </p>
+                                <div class="form-outline mb-4">
+                                    <!--<input type="email" class="form-control" placeholder="United States"
+                                        aria-label="United States" aria-describedby="basic-addon1" />-->
+                                    {% if form2 %}
+                                    {{ form2.billing_country }}
+                                    {% else %}
+                                    {{ form.billing_country }}
+                                    {% endif %}
+                                    <div class="invalid-feedback">
+                                        Please select a valid country.
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Grid column-->
+
+                            <!--Grid column-->
+                            <div class="col-lg-4 col-md-12 mb-4">
+                                <div class="form-outline">
+                                    <label for="billing_zip">Zip</label>
+                                    <input type="text" class="text-input form-control" placeholder="Zip code"
+                                        id="id_billing_zip" {% if form2 %} name="second-billing_zip"
+                                        value="{{form2.billing_zip.value|default:''}}" {% else %} name="billing_zip"
+                                        value="{{form.billing_zip.value|default:''}}" {% endif %} />
+                                    <div class="invalid-feedback">
+                                        Zip code required.
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Grid column-->
+                        </div>
+                        <!--Grid row-->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="set_default_billing"
+                                id="flexCheckDefault" {% if form2 %} name="set_default_billing"
+                                value="{{form2.set_default_billing.value|default:''}}" {% else %}
+                                name="second-set_default_billing" value="{{form2.set_default_billing.value|default:''}}"
+                                {% endif %} />
+                            <label class="form-check-label" for="set_default_billing">Save as default billing
+                                address.</label>
+                        </div>
+                    </div>
+                    {% if default_billing_address %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="use_default_billing"
+                            id="use_default_billing" {% if form2 %} name="second-use_default_billing" {% else %}
+                            name="use_default_billing" {% endif %} id="flexCheckDefault" {% if form2 %}
+                            value="{{form2.use_default_billing.value|default:''}}" {% else %}
+                            value="{{form2.use_default_billing.value|default:''}}" {% endif %} />
+                        Use default billing: {{ default_billing_address }}
+                    </div>
+                    {% endif %}
+                    <hr />
+                    <h5>Payment Thru:</h5>
+                    <div class="my-3">
+                        {% for name, value in form.fields.payment_option.choices %}
+                        <div class="form-check">
+                            <input class="form-check-input" {% if form2 %} name="first-payment_option" {% else %}
+                                name="payment_option" {% endif %} type="radio" value="{{ name}}" id="{{ name }}" />
+                            <label class="form-check-label" for="payment_option"> {{ value }} </label>
+                        </div>
+                        {% endfor %}
+                        <!--<div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                id="flexRadioDefault3" />
+                            <label class="form-check-label" for="flexRadioDefault3"> Paypal </label>
+                        </div>-->
+                    </div>
+                    <hr class="mb-4" />
+                    <button class="btn btn-primary" type="submit">Continue to checkout</button>
+                </form>
+                <!--/.Card-->
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-md-4 mb-4">
+                <!-- Heading -->
+                <!--<h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Your cart</span>
+                    <span class="badge rounded-pill badge-primary">3</span>
+                </h4>-->
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Your cart</span>
+                    <span class="badge rounded-pill badge-primary">{{ object.items.count }}</span>
+                </h4>
+                {% include 'order_snippet.html' %}
+                <!-- Cart -->
+                <!--<ul class="list-group mb-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div>
+                            <h6 class="my-0">Product name</h6>
+                            <small class="text-muted">Brief description</small>
+                        </div>
+                        <span class="text-muted">$12</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div>
+                            <h6 class="my-0">Second product</h6>
+                            <small class="text-muted">Brief description</small>
+                        </div>
+                        <span class="text-muted">$8</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div>
+                            <h6 class="my-0">Third item</h6>
+                            <small class="text-muted">Brief description</small>
+                        </div>
+                        <span class="text-muted">$5</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                        <div class="text-success">
+                            <h6 class="my-0">Promo code</h6>
+                            <small>EXAMPLECODE</small>
+                        </div>
+                        <span class="text-success">-$5</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total (USD)</span>
+                        <strong>$20</strong>
+                    </li>
+                </ul>-->
+                <!-- Cart -->
+                <!-- Promo code -->
+            </div>
+            <!--Grid column-->
+        </div>
+        <!--Grid row-->
+    </div>
+</main>
+<!--Main layout-->
+
+<!-- footer -->
+{% endblock %}
+{% block extrascripts %}
+<script>
+    const hideableShippingForm = $(".hideable-shipping-form");
+    const hideableBillingForm = $(".hideable-billing-form");
+
+    const use_default_shipping = document.querySelector("input[name='use_default_shipping']");
+    const use_default_billing = document.querySelector("input[name='use_default_billing']");
+
+    use_default_shipping.addEventListener("change", function () {
+        if (this.checked) {
+            hideableShippingForm.hide()
+        } else {
+            hideableShippingForm.show()
+        }
+    })
+    use_default_billing.addEventListener("change", function () {
+        if (this.checked) {
+            hideableBillingForm.hide()
+        } else {
+            hideableBillingForm.show()
+        }
+    })
+</script>
+{% endblock %}
